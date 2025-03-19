@@ -5,15 +5,6 @@ import todosFromServer from './api/todos';
 import { TodoList } from './components/TodoList';
 import { useState } from 'react';
 
-function getUserById(userId: number) {
-  return usersFromServer.find(user => user.id === userId) || null;
-}
-
-export const todos = todosFromServer.map(todo => ({
-  ...todo,
-  user: getUserById(todo.userId),
-}));
-
 export type Todo = {
   user: {
     id: number;
@@ -28,6 +19,15 @@ export type Todo = {
 };
 
 export const App: React.FC = () => {
+  function getUserById(userId: number) {
+    return usersFromServer.find(user => user.id === userId) || null;
+  }
+
+  const todos = todosFromServer.map(todo => ({
+    ...todo,
+    user: getUserById(todo.userId),
+  }));
+
   const [title, setTitle] = useState('');
   const [hasTitleError, setHasTitleError] = useState(false);
 
